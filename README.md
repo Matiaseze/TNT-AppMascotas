@@ -4,7 +4,7 @@
 
 ## Integrantes: 
 - Barea Matias
-- Lucia Pablovich
+- Pablovich Lucia
 
 ## Propuesta: 
 ### 🐾 Aplicacion para cuidado integral y seguimiento de mascotas
