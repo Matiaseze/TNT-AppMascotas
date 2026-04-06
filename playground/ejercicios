@@ -1,0 +1,80 @@
+/**
+ * You can edit, run, and share this code.
+ * play.kotlinlang.org
+ */
+
+/** 
+ *Utilizar Kotlin Playground para optimizar un fragmento de lógica de negocio escrito en Java.
+El objetivo es transcribirlo a Kotlin utilizando Data Class, analizando la generación	
+automática de funciones miembro (get, set, identidad y copia).
+
+public final class UserAccount {
+    private final String uuid;
+    private final String email;
+    private final Double balance;
+
+    public UserAccount(String uuid, String email, Double balance) {
+        this.uuid = uuid;
+        this.email = email;
+        this.balance = balance;
+    }
+    // getters, toString(), equals(), y hashCode().
+}
+**/
+
+
+
+
+fun ejercicio2(): String {
+    data class UserAccount(val uuid: String, val email: String, val balance: Double)
+    
+    val userAcc = UserAccount("1","user@mail.com",1234.8903)
+    
+    println("Id del usuario: ${userAcc.uuid}")
+    println("E-mail del usuario: ${userAcc.email}")
+    println("Balance del usuario: ${userAcc.balance}")
+    
+   	val userAcc2 = userAcc.copy(email = "user2@email.com")
+       
+    println("usuario original: ${userAcc.email}")
+    println("usuario duplicado: ${userAcc2.email}")
+    
+       
+    val msg: String = "Ejercicio 2 Finalizado"
+    return msg
+    
+}
+
+
+/**
+Kotlin distingue entre tipos que pueden ser nulos y los que no. Esta distinción es
+verificada estáticamente. La tarea es implementar una función que reciba una lista
+de montos transaccionales (algunos de los cuales pueden ser null). A partir de esta
+lista, utilizar el operador de llamada segura (?.) o el operador Elvis (?:) para retornar
+la suma total, tratando los valores nulos como 0.0.
+Restricción: No usar de sentencias if (x != null).
+
+**/
+
+fun ejercicio3(): String {
+    
+    
+    fun devolverNulos(Array montos): Float
+    
+    
+    val list = lista_montos
+    
+    
+    val msg: String = "Ejercicio 3 Finalizado"
+    return msg
+}
+
+
+
+fun main() {
+    println(ejercicio2())
+    println(ejercicio3())
+    
+
+    
+}
