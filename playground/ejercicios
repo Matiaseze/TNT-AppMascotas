@@ -59,10 +59,17 @@ Restricción: No usar de sentencias if (x != null).
 fun ejercicio3(): String {
     
     
-    fun devolverNulos(Array montos): Float
+    fun sumaMontos(montos: List<Double?>): Double {
+        return montos.sumOf { it ?: 0.0 }
+    }
+        
+    val transacciones = listOf(100.0, null, 50.5, null, 20.0)
     
+    println("Array de transacciones con nulos en el: $transacciones")
+
+    val total = sumaMontos(transacciones)
     
-    val list = lista_montos
+    println("Total de montos: $total")
     
     
     val msg: String = "Ejercicio 3 Finalizado"
