@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AppMascotas</string>
+    <string name="txt_user">Ingresar Usuario o Email</string>
+    <string name="txt_pass">Contraseña</string>
+    <string name="btn_login">Ingresar</string>
+    <string name="btn_exit">Salir</string>
+    <string name="checkbox_remember_me">Recordarme</string>
+</resources>
