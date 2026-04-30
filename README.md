@@ -19,6 +19,34 @@ La aplicación también ofrecerá la posibilidad de adjuntar imágenes en los re
 
 Se espera que los usuarios puedan visualizar esta información de forma clara mediante un historial organizado, y que puedan compartir fácilmente los datos relevantes con veterinarios para mejorar el seguimiento y diagnóstico.
 
+### 📁 Estructura del repositorio
+TNT-AppMascotas/
+ ├── AppMascotasV1/     # Proyecto Android (abrir en Android Studio)
+ ├── docs/              # Documentación
+ ├── AppMascotasV2/     # (futuro)
+ └── README.md
+ 
+### 🚀 Cómo levantar el proyecto
+1. Clonar el repositorio
+git clone https://github.com/Matiaseze/TNT-AppMascotas.git
+cd TNT-AppMascotas
 
+2. Abrir proyecto
+Abrir Android Studio
+Seleccionar "Open"
+Elegir la carpeta:
+AppMascotasV1/
+
+3. Sincronizar Gradle
+Una vez abierto el proyecto:
+
+Android Studio detectará automáticamente la configuración
+Esperar a que finalice la sincronización de Gradle
+Si no inicia automáticamente:
+Click en "Sync Project with Gradle Files"
+
+4. Ejecutar la aplicación
+Conectar un dispositivo movil android o iniciar un emulador
+Presionar ▶️ Run
 
 
