@@ -20,11 +20,11 @@ La aplicación también ofrecerá la posibilidad de adjuntar imágenes en los re
 Se espera que los usuarios puedan visualizar esta información de forma clara mediante un historial organizado, y que puedan compartir fácilmente los datos relevantes con veterinarios para mejorar el seguimiento y diagnóstico.
 
 ### 📁 Estructura del repositorio
-TNT-AppMascotas/
- ├── AppMascotasV1/     # Proyecto Android (abrir en Android Studio)
- ├── docs/              # Documentación
- ├── AppMascotasV2/     # (futuro)
- └── README.md
+TNT-AppMascotas\
+├── AppMascotasV1/     # Proyecto Android (abrir en Android Studio)\
+├── docs/              # Documentación\
+├── AppMascotasV2/     # (proximamente)\
+└── README.md
  
 ### 🚀 Cómo levantar el proyecto
 1. Clonar el repositorio
