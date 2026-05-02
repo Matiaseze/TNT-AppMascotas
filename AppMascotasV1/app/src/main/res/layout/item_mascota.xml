@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/tarjeta_mascota">
+
+    <ImageView
+        android:id="@+id/imgMascota"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:contentDescription="mascota"
+        android:src="@drawable/ic_launcher_foreground"
+        android:layout_marginEnd="12dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Firulais"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/violeta_oscuro"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/txtInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Perro - 3 años"
+            android:textColor="@color/violeta"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+</LinearLayout>

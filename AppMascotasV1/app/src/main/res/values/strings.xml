@@ -5,4 +5,9 @@
     <string name="btn_login">Ingresar</string>
     <string name="btn_exit">Salir</string>
     <string name="checkbox_remember_me">Recordarme</string>
+    <string name="app_mascotas">App Mascotas</string>
+    <string name="Descripcion_app">Esta aplicación permite gestionar el cuidado de mascotas, incluyendo seguimiento diario, registro de síntomas, recordatorios y almacenamiento de información relevante.</string>
+    <string name="funciones_principales">Funciones principales:</string>
+    <string name="Descripcion_funciones">• Registro de mascotas\n• Seguimiento diario\n• Notificaciones\n• Historial con imágenes</string>
+    <string name="mis_mascotas">Mis Mascotas</string>
 </resources>

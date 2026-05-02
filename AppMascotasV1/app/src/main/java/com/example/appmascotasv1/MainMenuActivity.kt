@@ -1,6 +1,8 @@
 package com.example.appmascotasv1
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -15,6 +17,16 @@ class MainMenuActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+        val btnMascotas = findViewById<Button>(R.id.btnMascotas)
+        val btnAcerca = findViewById<Button>(R.id.btnAcerca)
+
+        btnMascotas.setOnClickListener {
+            startActivity(Intent(this, ListadoMascotasActivity::class.java))
+        }
+
+        btnAcerca.setOnClickListener {
+            startActivity(Intent(this, AcercaDeActivity::class.java))
         }
     }
 }
