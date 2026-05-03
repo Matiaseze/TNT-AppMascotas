@@ -5,21 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="12dp"
-    android:layout_marginBottom="8dp"
-    android:background="@drawable/tarjeta_mascota">
+    android:padding="14dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/tarjeta_mascota"
+    android:gravity="center_vertical"
+    android:elevation="2dp">
 
-    <ImageView
-        android:id="@+id/imgMascota"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:contentDescription="mascota"
-        android:src="@drawable/ic_launcher_foreground"
-        android:layout_marginEnd="12dp"/>
+    <FrameLayout
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="14dp">
+
+        <ImageView
+            android:id="@+id/imgMascota"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:background="@drawable/bg_avatar_circle"
+            android:contentDescription="mascota"
+            android:src="@drawable/ic_launcher_foreground"
+            android:padding="6dp"
+            android:scaleType="centerInside" />
+
+    </FrameLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
@@ -28,7 +40,7 @@
             android:layout_height="wrap_content"
             android:text="Firulais"
             android:textStyle="bold"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textColor="@color/violeta_oscuro"
             tools:ignore="HardcodedText" />
 
@@ -38,8 +50,17 @@
             android:layout_height="wrap_content"
             android:text="Perro - 3 años"
             android:textColor="@color/violeta"
+            android:textSize="13sp"
+            android:layout_marginTop="2dp"
             tools:ignore="HardcodedText" />
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="›"
+        android:textColor="@color/colorHint"
+        android:textSize="22sp" />
 
 </LinearLayout>

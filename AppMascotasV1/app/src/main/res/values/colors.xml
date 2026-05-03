@@ -3,8 +3,19 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="amarillo">#FCE762</color>
+    <color name="amarillo_claro">#FEF4A0</color>
     <color name="blanco">#FFFDED</color>
     <color name="marron">#FFB17A</color>
     <color name="violeta">#4F4789</color>
     <color name="violeta_oscuro">#201335</color>
+    <color name="colorPrimary">#4F4789</color>
+    <color name="colorPrimaryVariant">#201335</color>
+    <color name="colorAccent">#FCE762</color>
+    <color name="colorSurface">#FFFDED</color>
+    <color name="colorOnPrimary">#FCE762</color>
+    <color name="colorOnSurface">#201335</color>
+    <color name="colorDivider">#E8E0D0</color>
+    <color name="colorCardBg">#FFFFFF</color>
+    <color name="colorInputBg">#FFFFFF</color>
+    <color name="colorHint">#9E97C0</color>
 </resources>
