@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.AppMascotas"
+        parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">#4F4789</item>
+        <item name="colorPrimaryVariant">#201335</item>
+        <item name="colorOnPrimary">#FCE762</item>
+        <item name="colorAccent">#FCE762</item>
+        <item name="android:windowBackground">#FFFDED</item>
+    </style>
+</resources>

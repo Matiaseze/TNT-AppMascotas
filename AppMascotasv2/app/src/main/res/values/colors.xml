@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="error_red">#D32F2F</color>
+    <color name="violeta">#4F4789</color>
+    <color name="violeta_oscuro">#201335</color>
+    <color name="violeta_claro">#9E97C0</color>
+    <color name="amarillo">#FCE762</color>
+    <color name="amarillo_claro">#FEF4A0</color>
+    <color name="blanco_calido">#FFFDED</color>
+    <color name="marron">#FFB17A</color>
+    <color name="black">#FF000000</color>
+    <color name="divider">#E8E0D0</color>
+</resources>
