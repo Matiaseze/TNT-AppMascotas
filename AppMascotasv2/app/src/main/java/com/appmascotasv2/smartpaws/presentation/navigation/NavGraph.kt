@@ -1,4 +1,4 @@
-package com.appmascotasv2.smartpaws.app.navigation
+package com.appmascotasv2.smartpaws.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -8,10 +8,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.appmascotasv2.smartpaws.di.AppContainer
-import com.appmascotasv2.smartpaws.feature.auth.LoginScreen
-import com.appmascotasv2.smartpaws.feature.auth.LoginViewModel
-import com.appmascotasv2.smartpaws.feature.auth.LoginViewModelFactory
-import com.appmascotasv2.smartpaws.feature.main.MainScreen
+import com.appmascotasv2.smartpaws.presentation.feature.auth.LoginScreen
+import com.appmascotasv2.smartpaws.presentation.feature.auth.LoginViewModel
+import com.appmascotasv2.smartpaws.presentation.feature.auth.LoginViewModelFactory
+import com.appmascotasv2.smartpaws.presentation.feature.main.MainScreen
 
 import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
@@ -20,14 +20,14 @@ import kotlinx.coroutines.launch
 import com.appmascotasv2.smartpaws.feature.home.HomeScreen
 import com.appmascotasv2.smartpaws.feature.home.HomeViewModel
 */
-import com.appmascotasv2.smartpaws.feature.mascota.RegistrarMascotaScreen
-import com.appmascotasv2.smartpaws.feature.mascota.RegistrarMascotaViewModel
-import com.appmascotasv2.smartpaws.feature.mascota.RegistrarMascotaViewModelFactory
-import com.appmascotasv2.smartpaws.feature.mascota.MascotaScreen
-import com.appmascotasv2.smartpaws.feature.mascota.MascotaViewModel
-import com.appmascotasv2.smartpaws.feature.mascota.MascotaViewModelFactory
-import com.appmascotasv2.smartpaws.feature.perfil.PerfilScreen
-import com.appmascotasv2.smartpaws.feature.about.AboutScreen
+import com.appmascotasv2.smartpaws.presentation.feature.mascota.RegistrarMascotaScreen
+import com.appmascotasv2.smartpaws.presentation.feature.mascota.RegistrarMascotaViewModel
+import com.appmascotasv2.smartpaws.presentation.feature.mascota.RegistrarMascotaViewModelFactory
+import com.appmascotasv2.smartpaws.presentation.feature.mascota.MascotaScreen
+import com.appmascotasv2.smartpaws.presentation.feature.mascota.MascotaViewModel
+import com.appmascotasv2.smartpaws.presentation.feature.mascota.MascotaViewModelFactory
+import com.appmascotasv2.smartpaws.presentation.feature.perfil.PerfilScreen
+import com.appmascotasv2.smartpaws.presentation.feature.about.AboutScreen
 
 sealed class Screen(val route: String) {
     object Login       : Screen("login")
@@ -64,7 +64,10 @@ fun NavGraph(container: AppContainer, startUserId: Int) {
         // ── Login ──────────────────────────────────────────────────────────
         composable(Screen.Login.route) {
             val vm: LoginViewModel = viewModel(
-                factory = LoginViewModelFactory(container.authRepository)
+                factory = LoginViewModelFactory(
+                    loginUseCase    = container.loginUseCase,
+                    registerUseCase = container.registerUseCase
+                )
             )
             LoginScreen(
                 viewModel      = vm,
@@ -75,26 +78,27 @@ fun NavGraph(container: AppContainer, startUserId: Int) {
                 }
             )
         }
-        // ── Main (con bottom bar) ──────────────────────────────────────────
+        // ── Main (bottom bar) ───────────────────────────────────────────────
         composable(
-                route     = Screen.Main.route,
-                arguments = listOf(navArgument("userId") { type = NavType.IntType })
-            ) { back ->
-                val userId = back.arguments!!.getInt("userId")
-                MainScreen(
-                    userId                  = userId,
-                    onNavigateToMascotas    = { navController.navigate(Screen.Mascotas.createRoute(userId)) },
-                    onLogout = {
-                        scope.launch {
-                            container.authRepository.logout()
-
-                            navController.navigate(Screen.Login.route) {
-                                popUpTo(0) { inclusive = true }
-                            }
+            route     = Screen.Main.route,
+            arguments = listOf(navArgument("userId") { type = NavType.IntType })
+        ) { back ->
+            val userId = back.arguments!!.getInt("userId")
+            MainScreen(
+                userId               = userId,
+                onNavigateToMascotas = {
+                    navController.navigate(Screen.Mascotas.createRoute(userId))
+                },
+                onLogout = {
+                    scope.launch {
+                        container.logoutUseCase()
+                        navController.navigate(Screen.Login.route) {
+                            popUpTo(0) { inclusive = true }
                         }
                     }
-                )
-            }
+                }
+            )
+        }
 
         // ── Mis Mascotas ───────────────────────────────────────────────────
         composable(
@@ -103,16 +107,19 @@ fun NavGraph(container: AppContainer, startUserId: Int) {
         ) { back ->
             val userId = back.arguments!!.getInt("userId")
             val vm: MascotaViewModel = viewModel(
-                factory = MascotaViewModelFactory(container.mascotaRepository, userId)
+                factory = MascotaViewModelFactory(
+                    getMascotasUseCase   = container.getMascotasUseCase,
+                    deleteMascotaUseCase = container.deleteMascotaUseCase,
+                    userId               = userId
+                )
             )
             MascotaScreen(
-                viewModel             = vm,
-                onNavigateToRegisterPet = {
-                    navController.navigate(Screen.RegisterPet.createRoute(userId))
-                },
-                onNavigateBack        = { navController.popBackStack() }
+                viewModel               = vm,
+                onNavigateToRegisterPet = { navController.navigate(Screen.RegisterPet.createRoute(userId)) },
+                onNavigateBack          = { navController.popBackStack() }
             )
         }
+
 
         // ── Registrar Mascota ──────────────────────────────────────────────
         composable(
@@ -121,7 +128,10 @@ fun NavGraph(container: AppContainer, startUserId: Int) {
         ) { back ->
             val userId = back.arguments!!.getInt("userId")
             val vm: RegistrarMascotaViewModel = viewModel(
-                factory = RegistrarMascotaViewModelFactory(container.mascotaRepository, userId)
+                factory = RegistrarMascotaViewModelFactory(
+                    addMascotaUseCase = container.addMascotaUseCase,
+                    userId            = userId
+                )
             )
             RegistrarMascotaScreen(
                 viewModel      = vm,
@@ -131,12 +141,14 @@ fun NavGraph(container: AppContainer, startUserId: Int) {
 
         // ── Mi Perfil ──────────────────────────────────────────────────────
         composable(Screen.Profile.route) {
-            PerfilScreen(onNavigateBack = { navController.popBackStack() })
+            _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.perfil.PerfilScreen(
+                onNavigateBack = { navController.popBackStack() })
         }
 
         // ── Acerca De ──────────────────────────────────────────────────────
         composable(Screen.About.route) {
-            AboutScreen(onNavigateBack = { navController.popBackStack() })
+            _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.about.AboutScreen(
+                onNavigateBack = { navController.popBackStack() })
         }
     }
 }

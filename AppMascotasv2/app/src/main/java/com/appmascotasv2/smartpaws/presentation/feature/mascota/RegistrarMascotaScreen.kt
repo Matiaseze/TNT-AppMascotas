@@ -1,4 +1,4 @@
-package com.appmascotasv2.smartpaws.feature.mascota
+package com.appmascotasv2.smartpaws.presentation.feature.mascota
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -12,13 +12,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.appmascotasv2.smartpaws.R
-import com.appmascotasv2.smartpaws.app.ui.components.SectionLabel
-import com.appmascotasv2.smartpaws.feature.mascota.model.MascotaCatalog
+import com.appmascotasv2.smartpaws.presentation.ui.components.SectionLabel
+import com.appmascotasv2.smartpaws.presentation.feature.mascota.model.MascotaCatalog
+import kotlin.collections.forEach
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrarMascotaScreen (
-    viewModel: RegistrarMascotaViewModel,
+    viewModel: com.appmascotasv2.smartpaws.presentation.feature.mascota.RegistrarMascotaViewModel,
     onNavigateBack: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -32,9 +33,9 @@ fun RegistrarMascotaScreen (
     var expandedEspecie by remember { mutableStateOf(false) }
     var expandedRaza by remember { mutableStateOf(false) }
 
-    val especies = remember { MascotaCatalog.especies }
+    val especies = remember { _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.mascota.model.MascotaCatalog.especies }
     val razas = remember(especie) {
-        MascotaCatalog.razasPorEspecie[especie] ?: emptyList()
+        _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.mascota.model.MascotaCatalog.razasPorEspecie[especie] ?: emptyList()
     }
 
     LaunchedEffect(uiState.isSaved) {

@@ -1,4 +1,4 @@
-package com.appmascotasv2.smartpaws.app.ui.theme
+package com.appmascotasv2.smartpaws.presentation.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

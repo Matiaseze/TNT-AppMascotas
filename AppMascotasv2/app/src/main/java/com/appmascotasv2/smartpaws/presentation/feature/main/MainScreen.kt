@@ -1,4 +1,4 @@
-package com.appmascotasv2.smartpaws.feature.main
+package com.appmascotasv2.smartpaws.presentation.feature.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,8 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.appmascotasv2.smartpaws.R
-import com.appmascotasv2.smartpaws.feature.about.AboutScreen
-import com.appmascotasv2.smartpaws.feature.perfil.PerfilScreen
+import com.appmascotasv2.smartpaws.presentation.feature.perfil.PerfilScreen
 
 // Tabs de la bottom bar
 enum class MainTab { HOME, CALENDARIO, PERFIL }
@@ -26,7 +25,7 @@ fun MainScreen(
     onNavigateToMascotas: () -> Unit,
     onLogout: () -> Unit
 ) {
-    var selectedTab by remember { mutableStateOf(MainTab.HOME) }
+    var selectedTab by remember { mutableStateOf(_root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.main.MainTab.HOME) }
 
     Scaffold(
         bottomBar = {
@@ -35,8 +34,8 @@ fun MainScreen(
                 contentColor   = MaterialTheme.colorScheme.onPrimary
             ) {
                 NavigationBarItem(
-                    selected = selectedTab == MainTab.HOME,
-                    onClick  = { selectedTab = MainTab.HOME },
+                    selected = selectedTab == _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.main.MainTab.HOME,
+                    onClick  = { selectedTab = _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.main.MainTab.HOME },
                     icon     = {
                         Icon(
                             painter            = painterResource(R.drawable.ic_home),
@@ -53,8 +52,8 @@ fun MainScreen(
                     )
                 )
                 NavigationBarItem(
-                    selected = selectedTab == MainTab.CALENDARIO,
-                    onClick  = { selectedTab = MainTab.CALENDARIO },
+                    selected = selectedTab == _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.main.MainTab.CALENDARIO,
+                    onClick  = { selectedTab = _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.main.MainTab.CALENDARIO },
                     icon     = {
                         Icon(
                             painter            = painterResource(R.drawable.ic_date_range),
@@ -71,8 +70,8 @@ fun MainScreen(
                     )
                 )
                 NavigationBarItem(
-                    selected = selectedTab == MainTab.PERFIL,
-                    onClick  = { selectedTab = MainTab.PERFIL },
+                    selected = selectedTab == _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.main.MainTab.PERFIL,
+                    onClick  = { selectedTab = _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.main.MainTab.PERFIL },
                     icon     = {
                         Icon(
                             painter            = painterResource(R.drawable.ic_person),
@@ -95,9 +94,16 @@ fun MainScreen(
 
         Box(modifier = Modifier.padding(padding)) {
             when (selectedTab) {
-                MainTab.HOME       -> HomeTab(onNavigateToMascotas = onNavigateToMascotas, onLogout = onLogout)
-                MainTab.CALENDARIO -> CalendarioTab()
-                MainTab.PERFIL     -> PerfilScreen(onNavigateBack = { selectedTab = MainTab.HOME })
+                _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.main.MainTab.HOME       -> _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.main.HomeTab(
+                    onNavigateToMascotas = onNavigateToMascotas,
+                    onLogout = onLogout
+                )
+                _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.main.MainTab.CALENDARIO -> _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.main.CalendarioTab()
+                _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.main.MainTab.PERFIL     -> _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.perfil.PerfilScreen(
+                    onNavigateBack = {
+                        selectedTab =
+                            _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.main.MainTab.HOME
+                    })
             }
         }
     }
@@ -172,19 +178,19 @@ private fun HomeTab(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // Card Mis Mascotas
-            MenuCard(
-                title    = "Mis Mascotas",
+            _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.main.MenuCard(
+                title = "Mis Mascotas",
                 subtitle = "Ver y registrar",
-                iconRes  = R.drawable.ic_pets,
-                onClick  = onNavigateToMascotas,
+                iconRes = R.drawable.ic_pets,
+                onClick = onNavigateToMascotas,
                 modifier = Modifier.weight(1f)
             )
             // Card Acerca De
-            MenuCard(
-                title    = "Acerca De",
+            _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.main.MenuCard(
+                title = "Acerca De",
                 subtitle = "Info de la app",
-                iconRes  = R.drawable.ic_about,
-                onClick  = { /* AboutScreen se puede abrir como dialog o nav */ },
+                iconRes = R.drawable.ic_about,
+                onClick = { /* AboutScreen se puede abrir como dialog o nav */ },
                 modifier = Modifier.weight(1f)
             )
         }

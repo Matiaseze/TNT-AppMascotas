@@ -1,4 +1,4 @@
-package com.appmascotasv2.smartpaws.feature.perfil
+package com.appmascotasv2.smartpaws.presentation.feature.perfil
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import com.appmascotasv2.smartpaws.R
 
 @OptIn(ExperimentalMaterial3Api::class)

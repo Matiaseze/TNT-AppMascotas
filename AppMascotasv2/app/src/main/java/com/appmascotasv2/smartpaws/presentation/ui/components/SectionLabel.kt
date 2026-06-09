@@ -1,4 +1,4 @@
-package com.appmascotasv2.smartpaws.app.ui.components
+package com.appmascotasv2.smartpaws.presentation.ui.components
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

@@ -1,4 +1,4 @@
-package com.appmascotasv2.smartpaws.feature.mascota.model
+package com.appmascotasv2.smartpaws.presentation.feature.mascota.model
 
 object MascotaCatalog {
 

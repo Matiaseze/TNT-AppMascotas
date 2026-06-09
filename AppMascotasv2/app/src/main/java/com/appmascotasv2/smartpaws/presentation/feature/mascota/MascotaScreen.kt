@@ -1,4 +1,4 @@
-package com.appmascotasv2.smartpaws.feature.mascota
+package com.appmascotasv2.smartpaws.presentation.feature.mascota
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -6,7 +6,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items                  // ← faltaba este
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import com.appmascotasv2.smartpaws.R
-import com.appmascotasv2.smartpaws.data.local.entity.MascotaEntity
+import com.appmascotasv2.smartpaws.domain.model.mascota.Mascota   // Importando el modelo de datos de domain
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,7 +27,7 @@ fun MascotaScreen(
     onNavigateToRegisterPet: () -> Unit,
     onNavigateBack: () -> Unit
 ) {
-    val pets by viewModel.pets.collectAsState()
+    val mascotas by viewModel.mascotas.collectAsState()
 
     Scaffold(
         topBar = {
@@ -39,7 +39,7 @@ fun MascotaScreen(
                             style = MaterialTheme.typography.headlineMedium
                         )
                         Text(
-                            "${pets.size} registradas",
+                            "${mascotas.size} registradas",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -62,10 +62,7 @@ fun MascotaScreen(
             ExtendedFloatingActionButton(
                 onClick        = onNavigateToRegisterPet,
                 icon           = {
-                    Icon(
-                        painter            = painterResource(R.drawable.ic_add),
-                        contentDescription = null
-                    )
+                    Icon(painterResource(R.drawable.ic_add), null)
                 },
                 text           = { Text("Nueva mascota") },
                 containerColor = MaterialTheme.colorScheme.primary,
@@ -75,19 +72,17 @@ fun MascotaScreen(
         containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
 
-        if (pets.isEmpty()) {
+        if (mascotas.isEmpty()) {
             Box(
-                modifier         = Modifier
-                    .fillMaxSize()
-                    .padding(padding),
+                modifier         = Modifier.fillMaxSize().padding(padding),
                 contentAlignment = Alignment.Center
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Icon(
-                        painter            = painterResource(R.drawable.ic_pets),
+                        painter  = painterResource(R.drawable.ic_pets),
                         contentDescription = null,
-                        modifier           = Modifier.size(72.dp),
-                        tint               = MaterialTheme.colorScheme.primaryContainer
+                        modifier = Modifier.size(72.dp),
+                        tint     = MaterialTheme.colorScheme.primaryContainer
                     )
                     Spacer(Modifier.height(16.dp))
                     Text(
@@ -113,14 +108,14 @@ fun MascotaScreen(
                 ),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(pets, key = { it.id }) { mascota ->
+                items(mascotas, key = { it.id }) { mascota ->
                     AnimatedVisibility(
                         visible = true,
                         enter   = fadeIn() + slideInVertically { it / 2 }
                     ) {
                         MascotaCard(
                             mascota  = mascota,
-                            onDelete = { viewModel.deletePet(mascota) }
+                            onDelete = { viewModel.deleteMascota(mascota) }
                         )
                     }
                 }
@@ -130,7 +125,7 @@ fun MascotaScreen(
 }
 
 @Composable
-private fun MascotaCard(mascota: MascotaEntity, onDelete: () -> Unit) {
+private fun MascotaCard(mascota: Mascota, onDelete: () -> Unit) {
     var showDelete by remember { mutableStateOf(false) }
 
     if (showDelete) {
@@ -152,15 +147,11 @@ private fun MascotaCard(mascota: MascotaEntity, onDelete: () -> Unit) {
     Card(
         modifier  = Modifier.fillMaxWidth(),
         shape     = RoundedCornerShape(16.dp),
-        colors    = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
+        colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
         Row(
-            modifier              = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier              = Modifier.fillMaxWidth().padding(16.dp),
             verticalAlignment     = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -177,10 +168,10 @@ private fun MascotaCard(mascota: MascotaEntity, onDelete: () -> Unit) {
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter            = painterResource(R.drawable.ic_pets),
+                        painter  = painterResource(R.drawable.ic_pets),
                         contentDescription = null,
-                        tint               = MaterialTheme.colorScheme.primary,
-                        modifier           = Modifier.size(26.dp)
+                        tint     = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(26.dp)
                     )
                 }
 
@@ -212,9 +203,9 @@ private fun MascotaCard(mascota: MascotaEntity, onDelete: () -> Unit) {
 
             IconButton(onClick = { showDelete = true }) {
                 Icon(
-                    painter            = painterResource(R.drawable.ic_delete),
+                    painter  = painterResource(R.drawable.ic_delete),
                     contentDescription = "Eliminar",
-                    tint               = MaterialTheme.colorScheme.onSurfaceVariant
+                    tint     = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }

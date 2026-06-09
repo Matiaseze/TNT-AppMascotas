@@ -1,4 +1,4 @@
-package com.appmascotasv2.smartpaws.feature.auth
+package com.appmascotasv2.smartpaws.presentation.feature.auth
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -19,7 +19,7 @@ import com.appmascotasv2.smartpaws.R
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel,
+    viewModel: com.appmascotasv2.smartpaws.presentation.feature.auth.LoginViewModel,
     onLoginSuccess: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()

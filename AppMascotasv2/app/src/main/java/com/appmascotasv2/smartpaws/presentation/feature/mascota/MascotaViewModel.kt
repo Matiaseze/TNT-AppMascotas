@@ -1,35 +1,37 @@
-package com.appmascotasv2.smartpaws.feature.mascota
+package com.appmascotasv2.smartpaws.presentation.feature.mascota
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.appmascotasv2.smartpaws.data.local.entity.MascotaEntity
-import com.appmascotasv2.smartpaws.data.repository.MascotaRepository
+import com.appmascotasv2.smartpaws.domain.model.mascota.Mascota
+import com.appmascotasv2.smartpaws.domain.usecase.mascota.DeleteMascotaUseCase
+import com.appmascotasv2.smartpaws.domain.usecase.mascota.GetMascotasUseCase
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class MascotaViewModel(
-    private val mascotaRepository: MascotaRepository,
+    private val getMascotasUseCase: GetMascotasUseCase,
+    private val deleteMascotaUseCase: DeleteMascotaUseCase,
     val userId: Int
 ) : ViewModel() {
 
-    val pets: StateFlow<List<MascotaEntity>> = mascotaRepository
-        .getPetsForUser(userId)
+    val mascotas: StateFlow<List<Mascota>> = getMascotasUseCase(userId)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
-    fun deletePet(pet: MascotaEntity) {
-        viewModelScope.launch { mascotaRepository.deleteMascota(pet) }
+    fun deleteMascota(mascota: Mascota) {
+        viewModelScope.launch { deleteMascotaUseCase(mascota) }
     }
 }
 
 class MascotaViewModelFactory(
-    private val mascotaRepository: MascotaRepository,
+    private val getMascotasUseCase: GetMascotasUseCase,
+    private val deleteMascotaUseCase: DeleteMascotaUseCase,
     private val userId: Int
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
-        return MascotaViewModel(mascotaRepository, userId) as T
+        return MascotaViewModel(getMascotasUseCase, deleteMascotaUseCase, userId) as T
     }
 }
