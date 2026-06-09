@@ -30,45 +30,45 @@ TNT-AppMascotas\
 
 AppMascotasV2 - Arquitectura CLEAN
 
-com.appmascotasv2.smartpaws/
-├── AppMascotasApp.kt
-├── MainActivity.kt
-├── data/
-│   ├── local/
-│   │   ├── AppDatabase.kt
-│   │   ├── dao/
-│   │   │   └── ...
-│   │   └── entity/
-│   │       └── ...
-│   ├── mapper/
-│   │   └── ...Mapper.kt
-│   └── repository/
-│       └── ...RepositoryImpl.kt
-├── domain/
-│   ├── model/
-│   │   └── ...
-│   ├── repository/
-│   │   └── ...Repository.kt
-│   └── usecase/
-│       ├── auth/
-│       │   └── ...UseCase.kt
-│       ├── mascota/
-│       │    └── ...UseCase.kt
-│       └── .../
-├── presentation/
-│   ├── navigation/NavGraph.kt
-│   ├── theme/
-│   │   ├── Color.kt
-│   │   ├── Theme.kt
-│   │   └── Type.kt
-│   └── feature/
-│       ├── auth/
-│       │   ├── LoginScreen.kt
-│       │   └── LoginViewModel.kt
-│       ├── main/MainScreen.kt
-│       └── mascota/
-│           ├── ...Screen.kt
-│           └── ...ViewModel.kt
+com.appmascotasv2.smartpaws\
+├── AppMascotasApp.kt\
+├── MainActivity.kt\
+├── data/\
+│   ├── local/\
+│   │   ├── AppDatabase.kt\
+│   │   ├── dao/\
+│   │   │   └── ...\
+│   │   └── entity/\
+│   │       └── ...\
+│   ├── mapper/\
+│   │   └── ...Mapper.kt\
+│   └── repository/\
+│       └── ...RepositoryImpl.kt\
+├── domain/\
+│   ├── model/\
+│   │   └── ...\
+│   ├── repository/\
+│   │   └── ...Repository.kt\
+│   └── usecase/\
+│       ├── auth/\
+│       │   └── ...UseCase.kt\
+│       ├── mascota/\
+│       │    └── ...UseCase.kt\
+│       └── .../\
+├── presentation/\
+│   ├── navigation/NavGraph.kt\
+│   ├── theme/\
+│   │   ├── Color.kt\
+│   │   ├── Theme.kt\
+│   │   └── Type.kt\
+│   └── feature/\
+│       ├── auth/\
+│       │   ├── LoginScreen.kt\
+│       │   └── LoginViewModel.kt\
+│       ├── main/MainScreen.kt\
+│       └── mascota/\
+│           ├── ...Screen.kt\
+│           └── ...ViewModel.kt\
 └── di/AppContainer.kt
 
  
