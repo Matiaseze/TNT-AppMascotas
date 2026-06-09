@@ -3,8 +3,8 @@
 ## Repositorio para la materia Taller de Nuevas Tecnologias
 
 ## Integrantes: 
-- Barea Matias
-- Pablovich Lucia
+- Barea Matías Ezequiel 
+- Pablovich Lucia Sofía 
 
 ## Propuesta: 
 ### 🐾 Aplicacion para cuidado integral y seguimiento de mascotas
@@ -21,10 +21,56 @@ Se espera que los usuarios puedan visualizar esta información de forma clara me
 
 ### 📁 Estructura del repositorio
 TNT-AppMascotas\
-├── AppMascotasV1/     # Proyecto Android (abrir en Android Studio)\
+├── AppMascotasV1/     # Release 1 demo\
 ├── docs/              # Documentación\
-├── AppMascotasV2/     # (proximamente)\
+├── AppMascotasV2/     # Release actual (JetPack Compose) \
 └── README.md
+
+### Estructura del proyecto
+
+AppMascotasV2 - Arquitectura CLEAN
+
+com.appmascotasv2.smartpaws/
+├── AppMascotasApp.kt
+├── MainActivity.kt
+├── data/
+│   ├── local/
+│   │   ├── AppDatabase.kt
+│   │   ├── dao/
+│   │   │   └── ...
+│   │   └── entity/
+│   │       └── ...
+│   ├── mapper/
+│   │   └── ...Mapper.kt
+│   └── repository/
+│       └── ...RepositoryImpl.kt
+├── domain/
+│   ├── model/
+│   │   └── ...
+│   ├── repository/
+│   │   └── ...Repository.kt
+│   └── usecase/
+│       ├── auth/
+│       │   └── ...UseCase.kt
+│       ├── mascota/
+│       │    └── ...UseCase.kt
+│       └── .../
+├── presentation/
+│   ├── navigation/NavGraph.kt
+│   ├── theme/
+│   │   ├── Color.kt
+│   │   ├── Theme.kt
+│   │   └── Type.kt
+│   └── feature/
+│       ├── auth/
+│       │   ├── LoginScreen.kt
+│       │   └── LoginViewModel.kt
+│       ├── main/MainScreen.kt
+│       └── mascota/
+│           ├── ...Screen.kt
+│           └── ...ViewModel.kt
+└── di/AppContainer.kt
+
  
 ### 🚀 Cómo levantar el proyecto
 1. Clonar el repositorio
@@ -35,7 +81,7 @@ cd TNT-AppMascotas
 Abrir Android Studio
 Seleccionar "Open"
 Elegir la carpeta:
-AppMascotasV1/
+AppMascotasV2/ <-- Actual
 
 3. Sincronizar Gradle
 Una vez abierto el proyecto:
@@ -48,5 +94,3 @@ Click en "Sync Project with Gradle Files"
 4. Ejecutar la aplicación
 Conectar un dispositivo movil android o iniciar un emulador
 Presionar ▶️ Run
-
-
