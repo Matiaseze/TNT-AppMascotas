@@ -4,8 +4,10 @@ import android.content.Context
 import com.appmascotasv2.smartpaws.data.local.AppDatabase
 import com.appmascotasv2.smartpaws.data.repository.AuthRepositoryImpl
 import com.appmascotasv2.smartpaws.data.repository.MascotaRepositoryImpl
+import com.appmascotasv2.smartpaws.data.repository.EventoMascotaRepositoryImpl
 import com.appmascotasv2.smartpaws.domain.repository.AuthRepository
 import com.appmascotasv2.smartpaws.domain.repository.MascotaRepository
+import com.appmascotasv2.smartpaws.domain.repository.EventoMascotaRepository
 import com.appmascotasv2.smartpaws.domain.usecase.mascota.AddMascotaUseCase
 import com.appmascotasv2.smartpaws.domain.usecase.mascota.DeleteMascotaUseCase
 import com.appmascotasv2.smartpaws.domain.usecase.mascota.GetMascotasUseCase
@@ -18,8 +20,10 @@ class AppContainer(context: Context) {
     // Repositorios
     private val authRepository: AuthRepository =
         AuthRepositoryImpl(db.usuarioDao(), context) // cambiar luego
-    private val mascotaRepository: MascotaRepository =
+    val mascotaRepository: MascotaRepository =
         MascotaRepositoryImpl(db.mascotaDao())
+    val eventoMascotaRepository: EventoMascotaRepository =
+        EventoMascotaRepositoryImpl(db.eventoMascotaDao())
 
     // Casos de uso — Mascota
     val getMascotasUseCase    = GetMascotasUseCase(mascotaRepository)
@@ -31,7 +35,5 @@ class AppContainer(context: Context) {
     val registerUseCase        = RegisterUseCase(authRepository)
     val logoutUseCase          = LogoutUseCase(authRepository)
     val getLoggedUserIdUseCase = GetLoggedUserIdUseCase(authRepository)
-
-// Casos de uso - algo
 
 }

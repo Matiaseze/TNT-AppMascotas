@@ -16,10 +16,6 @@ import com.appmascotasv2.smartpaws.presentation.feature.main.MainScreen
 import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
 
-/*
-import com.appmascotasv2.smartpaws.feature.home.HomeScreen
-import com.appmascotasv2.smartpaws.feature.home.HomeViewModel
-*/
 import com.appmascotasv2.smartpaws.presentation.feature.mascota.RegistrarMascotaScreen
 import com.appmascotasv2.smartpaws.presentation.feature.mascota.RegistrarMascotaViewModel
 import com.appmascotasv2.smartpaws.presentation.feature.mascota.RegistrarMascotaViewModelFactory
@@ -35,9 +31,6 @@ sealed class Screen(val route: String) {
     object Main        : Screen("main/{userId}") {
         fun createRoute(userId: Int) = "main/$userId"
     }
-    /*object Home        : Screen("home/{userId}") {
-        fun createRoute(userId: Int) = "home/$userId"
-    }*/
     object Mascotas        : Screen("pets/{userId}") {
         fun createRoute(userId: Int) = "pets/$userId"
     }
@@ -86,6 +79,7 @@ fun NavGraph(container: AppContainer, startUserId: Int) {
             val userId = back.arguments!!.getInt("userId")
             MainScreen(
                 userId               = userId,
+                container            = container,
                 onNavigateToMascotas = {
                     navController.navigate(Screen.Mascotas.createRoute(userId))
                 },
@@ -141,13 +135,13 @@ fun NavGraph(container: AppContainer, startUserId: Int) {
 
         // ── Mi Perfil ──────────────────────────────────────────────────────
         composable(Screen.Profile.route) {
-            _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.perfil.PerfilScreen(
+            PerfilScreen(
                 onNavigateBack = { navController.popBackStack() })
         }
 
         // ── Acerca De ──────────────────────────────────────────────────────
         composable(Screen.About.route) {
-            _root_ide_package_.com.appmascotasv2.smartpaws.presentation.feature.about.AboutScreen(
+            AboutScreen(
                 onNavigateBack = { navController.popBackStack() })
         }
     }
