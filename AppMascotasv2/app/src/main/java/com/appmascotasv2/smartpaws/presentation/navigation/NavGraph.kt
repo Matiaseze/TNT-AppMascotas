@@ -22,7 +22,6 @@ import com.appmascotasv2.smartpaws.presentation.feature.mascota.RegistrarMascota
 import com.appmascotasv2.smartpaws.presentation.feature.mascota.MascotaScreen
 import com.appmascotasv2.smartpaws.presentation.feature.mascota.MascotaViewModel
 import com.appmascotasv2.smartpaws.presentation.feature.mascota.MascotaViewModelFactory
-import com.appmascotasv2.smartpaws.presentation.feature.perfil.PerfilScreen
 import com.appmascotasv2.smartpaws.presentation.feature.about.AboutScreen
 
 sealed class Screen(val route: String) {
@@ -80,9 +79,8 @@ fun NavGraph(container: AppContainer, startUserId: Int) {
             MainScreen(
                 userId               = userId,
                 container            = container,
-                onNavigateToMascotas = {
-                    navController.navigate(Screen.Mascotas.createRoute(userId))
-                },
+                onNavigateToMascotas = {navController.navigate(Screen.Mascotas.createRoute(userId))},
+                onNavigateToAbout    = {navController.navigate(Screen.About.route)},
                 onLogout = {
                     scope.launch {
                         container.logoutUseCase()
@@ -131,12 +129,6 @@ fun NavGraph(container: AppContainer, startUserId: Int) {
                 viewModel      = vm,
                 onNavigateBack = { navController.popBackStack() }
             )
-        }
-
-        // ── Mi Perfil ──────────────────────────────────────────────────────
-        composable(Screen.Profile.route) {
-            PerfilScreen(
-                onNavigateBack = { navController.popBackStack() })
         }
 
         // ── Acerca De ──────────────────────────────────────────────────────

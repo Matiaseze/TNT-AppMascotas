@@ -54,6 +54,9 @@ class AuthRepositoryImpl(
         context.dataStore.edit { it.remove(KEY_USER_ID) }
     }
 
+    override suspend fun getUsuarioById(id: Int): Usuario? =
+        userDao.findById(id)?.toDomain()
+
     private suspend fun saveSession(userId: Int) {
         context.dataStore.edit { it[KEY_USER_ID] = userId }
     }

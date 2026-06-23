@@ -36,4 +36,6 @@ class AppContainer(context: Context) {
     val logoutUseCase          = LogoutUseCase(authRepository)
     val getLoggedUserIdUseCase = GetLoggedUserIdUseCase(authRepository)
 
+    val getUsuarioByIdUseCase = GetUsuarioByIdUseCase(authRepository)
+
 }
