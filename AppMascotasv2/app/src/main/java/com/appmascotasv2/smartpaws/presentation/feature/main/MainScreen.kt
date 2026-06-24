@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.appmascotasv2.smartpaws.R
+import com.appmascotasv2.smartpaws.data.util.PdfReportGenerator
 import com.appmascotasv2.smartpaws.di.AppContainer
 import com.appmascotasv2.smartpaws.domain.model.mascota.EventoMascota
 import com.appmascotasv2.smartpaws.domain.model.mascota.Mascota
@@ -462,6 +463,8 @@ private fun CalendarioTab(viewModel: CalendarioViewModel) {
     val selectedDate by viewModel.selectedDate.collectAsState()
     val visibleMonth by viewModel.visibleMonth.collectAsState()
     var showAddDialog by remember { mutableStateOf(false) }
+    var showExportDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     val (year, month) = visibleMonth
 
@@ -519,6 +522,17 @@ private fun CalendarioTab(viewModel: CalendarioViewModel) {
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp, vertical = 8.dp)
             )
+
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(onClick = { showExportDialog = true }) {
+                    Icon(painterResource(R.drawable.ic_date_range), null)
+                    Spacer(Modifier.width(8.dp))
+                    Text("Exportar PDF del mes")
+                }
+            }
 
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
@@ -589,6 +603,26 @@ private fun CalendarioTab(viewModel: CalendarioViewModel) {
     }
 
     // ── Dialogs ──────────────────────────────────────────────────────────
+    if (showExportDialog) {
+        ExportPdfDialog(
+            mascotas = mascotas,
+            onDismiss = { showExportDialog = false },
+            onConfirm = { mascota ->
+                val file = PdfReportGenerator.generateEventReport(
+                    context = context,
+                    mascotaNombre = mascota.nombre,
+                    mes = month,
+                    anio = year,
+                    eventos = eventos.filter { it.mascotaId == mascota.id }
+                )
+                if (file != null) {
+                    PdfReportGenerator.sharePdf(context, file)
+                }
+                showExportDialog = false
+            }
+        )
+    }
+
     if (showAddDialog) {
         if (mascotas.isEmpty()) {
             AlertDialog(
@@ -618,6 +652,51 @@ private fun CalendarioTab(viewModel: CalendarioViewModel) {
             }
         }
     }
+}
+
+@Composable
+fun ExportPdfDialog(
+    mascotas: List<Mascota>,
+    onDismiss: () -> Unit,
+    onConfirm: (Mascota) -> Unit
+) {
+    var selectedMascota by remember { mutableStateOf(mascotas.firstOrNull()) }
+    var expanded by remember { mutableStateOf(false) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Exportar Informe del Mes") },
+        text = {
+            Column {
+                Text("Seleccioná la mascota para el informe PDF:")
+                Spacer(Modifier.height(16.dp))
+                if (mascotas.isNotEmpty()) {
+                    Box {
+                        OutlinedButton(onClick = { expanded = true }, modifier = Modifier.fillMaxWidth()) {
+                            Text(selectedMascota?.nombre ?: "Seleccionar mascota")
+                        }
+                        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                            mascotas.forEach { m ->
+                                DropdownMenuItem(
+                                    text = { Text(m.nombre) },
+                                    onClick = { selectedMascota = m; expanded = false }
+                                )
+                            }
+                        }
+                    }
+                } else {
+                    Text("No hay mascotas registradas", color = Color.Red)
+                }
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = { selectedMascota?.let { onConfirm(it) } },
+                enabled = selectedMascota != null
+            ) { Text("Generar y Compartir") }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancelar") } }
+    )
 }
 
 @Composable
