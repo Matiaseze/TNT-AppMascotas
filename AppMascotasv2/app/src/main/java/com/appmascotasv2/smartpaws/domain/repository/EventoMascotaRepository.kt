@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface EventoMascotaRepository {
     fun getEventosByMascota(mascotaId: Int): Flow<List<EventoMascota>>
     fun getAllEventos(): Flow<List<EventoMascota>>
-    suspend fun addEvento(evento: EventoMascota)
+    suspend fun addEvento(evento: EventoMascota): Long
     suspend fun updateEvento(evento: EventoMascota)
     suspend fun deleteEvento(evento: EventoMascota)
 }

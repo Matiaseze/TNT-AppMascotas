@@ -1,5 +1,11 @@
 package com.appmascotasv2.smartpaws.presentation.feature.main
 
+import android.Manifest
+import android.app.Application
+import android.app.TimePickerDialog
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -43,6 +50,18 @@ fun MainScreen(
     onLogout: () -> Unit
 ) {
     var selectedTab by rememberSaveable { mutableStateOf(MainTab.HOME) }
+    val context = LocalContext.current
+
+    // Solicitar permiso de notificaciones en Android 13+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        val permissionLauncher = rememberLauncherForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { _ -> }
+
+        LaunchedEffect(Unit) {
+            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
 
     Scaffold(
         bottomBar = {
@@ -108,6 +127,7 @@ fun MainScreen(
                 MainTab.CALENDARIO -> {
                     val vm: CalendarioViewModel = viewModel(
                         factory = CalendarioViewModelFactory(
+                            context.applicationContext as Application,
                             container.eventoMascotaRepository,
                             container.mascotaRepository,
                             userId
@@ -300,7 +320,7 @@ private fun HomeTab(
                     ProximoEventoCard(
                         evento        = evento,
                         nombreMascota = nombreMascota,
-                        formatter     = formatterCorto
+                        formatter     = formatterCompleto
                     )
                     Spacer(Modifier.height(10.dp))
                 }
@@ -581,13 +601,14 @@ private fun CalendarioTab(viewModel: CalendarioViewModel) {
             )
         } else {
             AddEventoDialog(
-                mascotas  = mascotas,
-                onDismiss = { showAddDialog = false }
-            ) { t, d, mId, tipo ->
+                mascotas     = mascotas,
+                selectedDate = selectedDate,
+                onDismiss    = { showAddDialog = false }
+            ) { t, d, mId, tipo, timestamp ->
                 viewModel.addEvento(
                     EventoMascota(
                         mascotaId   = mId,
-                        fecha       = selectedDate,
+                        fecha       = timestamp,
                         titulo      = t,
                         descripcion = d,
                         tipo        = tipo
@@ -601,16 +622,28 @@ private fun CalendarioTab(viewModel: CalendarioViewModel) {
 
 @Composable
 fun EventItem(evento: EventoMascota, mascotaNombre: String) {
+    val timeFormatter = remember { SimpleDateFormat("HH:mm", Locale.getDefault()) }
     Card(
         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                val icon = if (evento.tipo == TipoEvento.TURNO_VETERINARIO) R.drawable.ic_date_range else R.drawable.ic_pets
-                Icon(painterResource(icon), null, modifier = Modifier.size(20.dp), tint = MaterialTheme.colorScheme.primary)
-                Spacer(Modifier.width(8.dp))
-                Text(evento.titulo, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    val icon = if (evento.tipo == TipoEvento.TURNO_VETERINARIO) R.drawable.ic_date_range else R.drawable.ic_pets
+                    Icon(painterResource(icon), null, modifier = Modifier.size(20.dp), tint = MaterialTheme.colorScheme.primary)
+                    Spacer(Modifier.width(8.dp))
+                    Text(evento.titulo, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                }
+                Text(
+                    timeFormatter.format(Date(evento.fecha)),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
             Text("Mascota: $mascotaNombre", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
             if (evento.descripcion.isNotBlank()) Text(evento.descripcion, style = MaterialTheme.typography.bodyMedium)
@@ -622,8 +655,9 @@ fun EventItem(evento: EventoMascota, mascotaNombre: String) {
 @Composable
 fun AddEventoDialog(
     mascotas: List<Mascota>,
+    selectedDate: Long,
     onDismiss: () -> Unit,
-    onConfirm: (String, String, Int, TipoEvento) -> Unit
+    onConfirm: (String, String, Int, TipoEvento, Long) -> Unit
 ) {
     var titulo by remember { mutableStateOf("") }
     var desc by remember { mutableStateOf("") }
@@ -631,6 +665,23 @@ fun AddEventoDialog(
     var tipo by remember { mutableStateOf(TipoEvento.REGISTRO) }
     var expM by remember { mutableStateOf(false) }
     var expT by remember { mutableStateOf(false) }
+    
+    val context = LocalContext.current
+    var selectedHour by remember { mutableStateOf(12) }
+    var selectedMinute by remember { mutableStateOf(0) }
+
+    val timePickerDialog = remember {
+        TimePickerDialog(
+            context,
+            { _, hour, minute ->
+                selectedHour = hour
+                selectedMinute = minute
+            },
+            selectedHour,
+            selectedMinute,
+            true
+        )
+    }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -640,6 +691,14 @@ fun AddEventoDialog(
                 OutlinedTextField(value = titulo, onValueChange = { titulo = it }, label = { Text("Título") }, modifier = Modifier.fillMaxWidth())
                 OutlinedTextField(value = desc, onValueChange = { desc = it }, label = { Text("Descripción") }, modifier = Modifier.fillMaxWidth())
                 
+                Button(
+                    onClick = { timePickerDialog.show() },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer, contentColor = MaterialTheme.colorScheme.onSecondaryContainer)
+                ) {
+                    Text("Hora: ${String.format("%02d:%02d", selectedHour, selectedMinute)}")
+                }
+
                 ExposedDropdownMenuBox(expanded = expM, onExpandedChange = { expM = !expM }) {
                     OutlinedTextField(
                         value = selectedMascota.nombre, onValueChange = {}, readOnly = true, label = { Text("Mascota") },
@@ -663,7 +722,21 @@ fun AddEventoDialog(
                 }
             }
         },
-        confirmButton = { Button(onClick = { onConfirm(titulo, desc, selectedMascota.id, tipo) }, enabled = titulo.isNotBlank()) { Text("Guardar") } },
+        confirmButton = { 
+            Button(
+                onClick = { 
+                    val finalCal = Calendar.getInstance().apply {
+                        timeInMillis = selectedDate
+                        set(Calendar.HOUR_OF_DAY, selectedHour)
+                        set(Calendar.MINUTE, selectedMinute)
+                        set(Calendar.SECOND, 0)
+                        set(Calendar.MILLISECOND, 0)
+                    }
+                    onConfirm(titulo, desc, selectedMascota.id, tipo, finalCal.timeInMillis) 
+                }, 
+                enabled = titulo.isNotBlank()
+            ) { Text("Guardar") } 
+        },
         dismissButton = { TextButton(onClick = onDismiss) { Text("Cancelar") } }
     )
 }

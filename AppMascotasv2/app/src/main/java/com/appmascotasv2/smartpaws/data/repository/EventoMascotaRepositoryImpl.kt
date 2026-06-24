@@ -29,8 +29,8 @@ class EventoMascotaRepositoryImpl(
         }
     }
 
-    override suspend fun addEvento(evento: EventoMascota) {
-        dao.insert(evento.toEntity())
+    override suspend fun addEvento(evento: EventoMascota): Long {
+        return dao.insert(evento.toEntity())
     }
 
     override suspend fun updateEvento(evento: EventoMascota) {
